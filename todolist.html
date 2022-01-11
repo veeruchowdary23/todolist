@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To do list</title>
+</head>
+
+<body>
+    <input type="text" id="task">
+    <input type="button" id="sub" value="submit" onclick="todo()">
+    <input type="button" id="editsub" value="editsubmit" onclick="todoedit()" style="display: none;">
+    <ol id="unorder"></ol>
+
+    <script>
+        function todo() {
+
+            let items = document.getElementById("unorder");
+            let listCount = document.getElementsByClassName("list").length;
+            // Add 
+
+            let res = document.getElementById("task").value;
+            if (res != "") {
+                let list = document.createElement('li');
+                items.appendChild(list);
+                let listSpan = document.createElement('span');
+                listSpan.setAttribute("data-id", listCount + 1)
+                listSpan.setAttribute("class", "list")
+                list.appendChild(listSpan);
+                listSpan.innerHTML = res;
+                //list.appendChild(document.createTextNode(res));
+
+                // Add edit and delete buttons to list item 
+
+                let edit = document.createElement('button');
+                list.appendChild(edit);
+                edit.setAttribute("id", listCount + 1)
+                edit.innerHTML = "Edit";
+                let del = document.createElement('button');
+                list.appendChild(del);
+                del.innerHTML = "Delete";
+                document.getElementById("task").value = "";
+
+
+                // Delete Functionality
+
+                del.addEventListener('click', function () {
+                    list.parentNode.removeChild(list);
+                }, false);
+                list.appendChild(del);
+
+
+                // Edit Functionality
+
+                edit.addEventListener('click', function () {
+                    let id = edit.getAttribute("id");
+                    let task = document.getElementById("task");
+                    task.setAttribute("class", id);
+                    document.getElementById("task").value = res;
+                    document.getElementById("sub").style.display = "none"
+                    document.getElementById("editsub").style.display = "block"
+
+                })
+
+            }
+        }
+        function todoedit() {
+
+            let items = document.getElementById("unorder");
+            let listCount = document.getElementsByClassName("list").length;
+            // Add 
+            let result = document.getElementById("task");
+            var u = result.getAttribute("class")
+            let res = document.getElementById("task").value;
+            if (res != "") {
+                for (var i = 0; i < listCount; i++) {
+                    if (u == document.getElementsByClassName("list")[i].getAttribute("data-id")) {
+                        document.getElementsByClassName("list")[i].innerHTML = res
+                    }
+                }
+                document.getElementById("task").value = "";
+                document.getElementById("sub").style.display = "block"
+                document.getElementById("editsub").style.display = "none"
+            }
+        }
+    </script>
+</body>
+
+</html>
